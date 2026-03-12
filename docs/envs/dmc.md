@@ -13,8 +13,11 @@ A collection of continuous control environments built on the [DeepMind Control S
 ```python
 import stable_worldmodel as swm
 
-# Example: Cheetah environment
+# Default task
 world = swm.World('swm/CheetahDMControl-v0', num_envs=4)
+
+# Specify a task explicitly
+world = swm.World('swm/CheetahDMControl-v0', num_envs=4, task='run-backward')
 ```
 
 ### Available Environments
@@ -50,6 +53,9 @@ A 21-DoF humanoid body that must learn to walk forward at a target speed. The ta
 
 ```python
 world = swm.World('swm/HumanoidDMControl-v0', num_envs=4)
+
+# Specify a task explicitly
+world = swm.World('swm/HumanoidDMControl-v0', num_envs=4, task='run')
 ```
 
 ### Environment Specs
@@ -100,6 +106,9 @@ A planar biped (half-cheetah) that must learn to run forward as fast as possible
 
 ```python
 world = swm.World('swm/CheetahDMControl-v0', num_envs=4)
+
+# Specify a task explicitly
+world = swm.World('swm/CheetahDMControl-v0', num_envs=4, task='run-backward')
 ```
 
 ### Environment Specs
@@ -146,6 +155,9 @@ A planar one-legged hopper that must learn to hop forward. The task uses feature
 
 ```python
 world = swm.World('swm/HopperDMControl-v0', num_envs=4)
+
+# Specify a task explicitly
+world = swm.World('swm/HopperDMControl-v0', num_envs=4, task='hop-backward')
 ```
 
 ### Environment Specs
@@ -186,9 +198,13 @@ A planar two-link arm that must reach a small target. The task uses feature-base
 |------|-------------|
 | `easy` | Reach a large target (radius 0.05) |
 | `hard` (default) | Reach a small target (radius 0.015) |
+| `qpos_match` | Match a target joint configuration |
 
 ```python
 world = swm.World('swm/ReacherDMControl-v0', num_envs=4)
+
+# Specify a task explicitly
+world = swm.World('swm/ReacherDMControl-v0', num_envs=4, task='easy')
 ```
 
 ### Environment Specs
@@ -240,6 +256,9 @@ A planar bipedal walker that must learn to walk forward at a target speed. The t
 
 ```python
 world = swm.World('swm/WalkerDMControl-v0', num_envs=4)
+
+# Specify a task explicitly
+world = swm.World('swm/WalkerDMControl-v0', num_envs=4, task='run')
 ```
 
 ### Environment Specs
@@ -284,6 +303,9 @@ A four-legged quadruped robot that must learn to walk forward. The task uses fea
 
 ```python
 world = swm.World('swm/QuadrupedDMControl-v0', num_envs=4)
+
+# Specify a task explicitly
+world = swm.World('swm/QuadrupedDMControl-v0', num_envs=4, task='run')
 ```
 
 ### Environment Specs
@@ -482,6 +504,9 @@ Note: the `spin` task produces different observations than the `turn_*` tasks (n
 
 ```python
 world = swm.World('swm/FingerDMControl-v0', num_envs=4)
+
+# Specify a task explicitly
+world = swm.World('swm/FingerDMControl-v0', num_envs=4, task='spin')
 ```
 
 ### Environment Specs
