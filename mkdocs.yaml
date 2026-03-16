@@ -12,6 +12,7 @@ theme:
     light: shadcn-light
     dark: github-dark
   topbar_sections: false
+  katex_options: {}
   show_datetime: false
 
 nav:
