@@ -120,9 +120,7 @@ world = swm.World('swm/MountainCarControl-v0', num_envs=4, render_mode='rgb_arra
 
 ## MountainCarContinuous
 
-![mountain_car_continuous_control](../assets/mountain_car_continuous_control.gif)
-
-The continuous-action variant of MountainCar.
+The continuous-action variant of MountainCar (renders identically to the discrete version above).
 
 **Task**: Reach the flag with a continuous force in `[-1, 1]`.
 
@@ -154,8 +152,6 @@ world = swm.World(
 | `visuals.fg` | Box(0.0, 0.4, shape=(3,)) | Mountain line / car / flagpole RGB |
 
 > Gravity is hardcoded (`0.0025`) inside the upstream `step` function and is not exposed for variation.
-
-![mountain_car_continuous_control_var](../assets/mountain_car_continuous_control_var.gif)
 
 ---
 
