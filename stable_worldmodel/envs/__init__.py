@@ -47,8 +47,8 @@ register(
 )
 
 register(
-    id='swm/OGBPointMaze-v0',
-    entry_point='stable_worldmodel.envs.ogbench.pointmaze_env:PointMazeEnv',
+    id='swm/OGBMaze-v0',
+    entry_point='stable_worldmodel.envs.ogbench.maze_env:MazeEnv',
 )
 
 register(

@@ -178,7 +178,7 @@ def _stack_fresh(per_env_infos: list[dict]) -> dict[str, Any]:
         elif isinstance(first, (bool, int, float, np.number)):
             stacked[k] = np.array(vals)[:, None]
         else:
-            stacked[k] = vals
+            stacked[k] = [[v] for v in vals]
     return stacked
 
 
@@ -195,4 +195,4 @@ def _write_env_info(stacked: dict, idx: int, info: dict) -> None:
         elif isinstance(buf, np.ndarray):
             buf[idx, 0] = v
         elif isinstance(buf, list):
-            buf[idx] = v
+            buf[idx][0] = v
