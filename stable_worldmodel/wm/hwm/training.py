@@ -17,16 +17,75 @@ def strip_action_dims(tensor, action_range):
     )
 
 
+def sample_waypoint_batch(batch, cfg):
+    """Randomly choose high-level source/target waypoints inside a span."""
+    pixels = batch['pixels']
+    batch_size, num_waypoints = pixels.shape[:2]
+    device = pixels.device
+
+    source_idx = torch.randint(
+        0, num_waypoints - 1, (batch_size,), device=device
+    )
+    target_idx = torch.empty_like(source_idx)
+    for row, src in enumerate(source_idx.tolist()):
+        target_idx[row] = torch.randint(
+            src + 1, num_waypoints, (1,), device=device
+        )
+
+    rows = torch.arange(batch_size, device=device)
+    pair_idx = torch.stack([source_idx, target_idx], dim=1)
+    pair_rows = rows[:, None]
+    selected = {
+        key: value[pair_rows, pair_idx]
+        if torch.is_tensor(value) and value.shape[:2] == pixels.shape[:2]
+        else value
+        for key, value in batch.items()
+    }
+
+    low_level_actions = batch['action']
+    max_chunk = int(cfg.macro_action.max_chunk)
+    action_dim = int(cfg.macro_action.low_level_action_dim)
+    chunks = low_level_actions.new_zeros(
+        batch_size, 1, max_chunk, action_dim
+    )
+    masks = torch.ones(
+        batch_size, 1, max_chunk, dtype=torch.bool, device=device
+    )
+
+    for row, (src, dst) in enumerate(
+        zip(source_idx.tolist(), target_idx.tolist())
+    ):
+        chunk = low_level_actions[row, src:dst]
+        length = min(chunk.shape[0], max_chunk)
+        chunks[row, 0, :length] = chunk[:length]
+        masks[row, 0, :length] = False
+
+    selected['action_chunk'] = chunks
+    selected['action_mask'] = masks
+    selected['waypoint_gap'] = (target_idx - source_idx).float()
+    return selected
+
+
 def hwm_forward(self, batch, stage, cfg):
     """Forward/loss for a long-timescale HWM predictor.
 
-    The first HWM training stage shares the PreJEPA/DINO-WM latent space and
-    learns dynamics at a larger temporal stride. With PushT and
-    ``frameskip=25``, the ``action`` input is a flattened 25-step primitive
-    action block, serving as the high-level macro-action.
+    This stage shares the DINO-WM latent space and predicts between randomly
+    sampled waypoints inside a fixed maximum span. The intervening low-level
+    action blocks are compressed into one latent macro-action.
     """
+    batch = sample_waypoint_batch(batch, cfg)
+    action_key = cfg.loss.action_key
+    action_chunks = torch.nan_to_num(batch['action_chunk'], 0.0)
+    action_masks = batch['action_mask']
+    latent_actions = self.action_encoder(action_chunks, action_masks)[:, 0]
+    batch[action_key] = torch.stack(
+        [latent_actions, torch.zeros_like(latent_actions)], dim=1
+    )
+
     for key in self.model.extra_encoders:
-        batch[key] = torch.nan_to_num(batch[key], 0.0).squeeze()
+        batch[key] = torch.nan_to_num(batch[key], 0.0)
+        if batch[key].ndim == 2:
+            batch[key] = batch[key][:, None, :]
 
     batch = self.model.encode(
         batch,
@@ -36,7 +95,7 @@ def hwm_forward(self, batch, stage, cfg):
 
     prev_embedding = batch['emb'][:, : cfg.wm.history_size, ...]
     pred_embedding = self.model.predict(prev_embedding)
-    target_embedding = batch['emb'][:, cfg.wm.num_preds :, ...].detach()
+    target_embedding = batch['emb'][:, cfg.wm.history_size :, ...].detach()
 
     loss_type = cfg.loss.type
     pixels_dim = batch['pixels_emb'].size(-1)
@@ -82,6 +141,12 @@ def hwm_forward(self, batch, stage, cfg):
 
     self.log_dict(
         {f'{stage}/{k}': v.detach() for k, v in batch.items() if '_loss' in k},
+        on_step=True,
+        sync_dist=True,
+    )
+    self.log(
+        f'{stage}/waypoint_gap',
+        batch['waypoint_gap'].mean(),
         on_step=True,
         sync_dist=True,
     )

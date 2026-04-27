@@ -185,31 +185,31 @@ def run(cfg: DictConfig):
         )
         with warmup_autocast_ctx:
             n = world.num_envs
-            world.evaluate(
-                dataset=dataset,
+            world.evaluate_from_dataset(
+                dataset,
                 start_steps=eval_start_idx.tolist()[:n],
-                goal_offset=cfg.eval.goal_offset_steps,
+                goal_offset_steps=cfg.eval.goal_offset_steps,
                 eval_budget=cfg.eval.eval_budget,
                 episodes_idx=eval_episodes.tolist()[:n],
                 callables=OmegaConf.to_container(
                     cfg.eval.get('callables'), resolve=True
                 ),
-                video=results_path,
+                video_path=results_path,
             )
         print('Warmup done.')
 
     start_time = time.time()
     with autocast_ctx:
-        metrics = world.evaluate(
-            dataset=dataset,
+        metrics = world.evaluate_from_dataset(
+            dataset,
             start_steps=eval_start_idx.tolist(),
-            goal_offset=cfg.eval.goal_offset_steps,
+            goal_offset_steps=cfg.eval.goal_offset_steps,
             eval_budget=cfg.eval.eval_budget,
             episodes_idx=eval_episodes.tolist(),
             callables=OmegaConf.to_container(
                 cfg.eval.get('callables'), resolve=True
             ),
-            video=results_path,
+            video_path=results_path,
         )
     end_time = time.time()
 
