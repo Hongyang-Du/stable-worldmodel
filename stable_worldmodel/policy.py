@@ -922,15 +922,28 @@ class HWMPolicy(BasePolicy):
         for k in range(self.l2_cfg.receding_horizon):
             subgoal_emb = subgoal_pixels_embs[k].to(device_l1, dtype_l1)  # (B', P, pixel_dim)
 
-            # Swap in the fixed-goal cost model for this subgoal
-            self.l1_solver.model = _FixedGoalCostModel(self.low_level_model, subgoal_emb)
+            l1_actions = []
+            solver_batch_size = max(1, int(getattr(self.l1_solver, 'batch_size', len(replan_idx))))
+            for start in range(0, len(replan_idx), solver_batch_size):
+                end = min(start + solver_batch_size, len(replan_idx))
+                local_rows = list(range(start, end))
+                local_idx = torch.arange(start, end, dtype=torch.long)
+                l1_info_chunk = self._slice_info(l1_info, local_rows, local_idx)
 
-            # Clear low-level WM observation cache so rollout re-encodes
-            if hasattr(self.low_level_model, '_init_cached_info'):
-                del self.low_level_model._init_cached_info
+                # Swap in a fixed-goal cost model whose subgoal batch matches
+                # the info batch CEM is solving for.
+                self.l1_solver.model = _FixedGoalCostModel(
+                    self.low_level_model, subgoal_emb[start:end]
+                )
 
-            outputs_l1 = self.l1_solver(l1_info)
-            prim_actions = outputs_l1['actions']  # (B', l1_horizon, prim_dim*frameskip)
+                # Clear low-level WM observation cache so rollout re-encodes
+                if hasattr(self.low_level_model, '_init_cached_info'):
+                    del self.low_level_model._init_cached_info
+
+                outputs_l1 = self.l1_solver(l1_info_chunk)
+                l1_actions.append(outputs_l1['actions'])
+
+            prim_actions = torch.cat(l1_actions, dim=0)  # (B', l1_horizon, prim_dim*frameskip)
 
             # Flatten to individual primitive env steps
             B_prime = prim_actions.shape[0]
