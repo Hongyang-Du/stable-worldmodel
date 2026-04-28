@@ -90,33 +90,48 @@ See the full documentation [here](https://galilai-group.github.io/stable-worldmo
 
 <table>
 <tr>
-<td align="center"><img src="docs/assets/ballincup.gif"   width="120"/><br><img src="docs/assets/ballincup_var.gif"   width="120"/></td>
-<td align="center"><img src="docs/assets/cartpole.gif"    width="120"/><br><img src="docs/assets/cartpole_var.gif"    width="120"/></td>
-<td align="center"><img src="docs/assets/cheetah.gif"     width="120"/><br><img src="docs/assets/cheetah_var.gif"     width="120"/></td>
-<td align="center"><img src="docs/assets/finger.gif"      width="120"/><br><img src="docs/assets/finger_var.gif"      width="120"/></td>
-<td align="center"><img src="docs/assets/hopper.gif"      width="120"/><br><img src="docs/assets/hopper_var.gif"      width="120"/></td>
-<td align="center"><img src="docs/assets/pendulum.gif"    width="120"/><br><img src="docs/assets/pendulum_var.gif"    width="120"/></td>
+<td align="center"><img src="docs/assets/ballincup.gif" width="120"/><br><img src="docs/assets/ballincup_var.gif" width="120"/></td>
+<td align="center"><img src="docs/assets/cartpole.gif"  width="120"/><br><img src="docs/assets/cartpole_var.gif"  width="120"/></td>
+<td align="center"><img src="docs/assets/cheetah.gif"   width="120"/><br><img src="docs/assets/cheetah_var.gif"   width="120"/></td>
+<td align="center"><img src="docs/assets/finger.gif"    width="120"/><br><img src="docs/assets/finger_var.gif"    width="120"/></td>
+<td align="center"><img src="docs/assets/hopper.gif"    width="120"/><br><img src="docs/assets/hopper_var.gif"    width="120"/></td>
 </tr>
 </table>
 
 <table>
 <tr>
-<td align="center"><img src="docs/assets/quadruped.gif"   width="120"/><br><img src="docs/assets/quadruped_var.gif"   width="120"/></td>
-<td align="center"><img src="docs/assets/reacher.gif"     width="120"/><br><img src="docs/assets/reacher_var.gif"     width="120"/></td>
-<td align="center"><img src="docs/assets/walker.gif"      width="120"/><br><img src="docs/assets/walker_var.gif"      width="120"/></td>
-<td align="center"><img src="docs/assets/cube.gif"        width="120"/><br><img src="docs/assets/cube_fov.gif"        width="120"/></td>
-<td align="center"><img src="docs/assets/scene.gif"       width="120"/><br><img src="docs/assets/scene_fov.gif"       width="120"/></td>
-<td align="center"><img src="docs/assets/pusht.gif"       width="120"/><br><img src="docs/assets/pusht_fov.gif"       width="120"/></td>
+<td align="center"><img src="docs/assets/pendulum.gif"  width="120"/><br><img src="docs/assets/pendulum_var.gif"  width="120"/></td>
+<td align="center"><img src="docs/assets/quadruped.gif" width="120"/><br><img src="docs/assets/quadruped_var.gif" width="120"/></td>
+<td align="center"><img src="docs/assets/reacher.gif"   width="120"/><br><img src="docs/assets/reacher_var.gif"   width="120"/></td>
+<td align="center"><img src="docs/assets/walker.gif"    width="120"/><br><img src="docs/assets/walker_var.gif"    width="120"/></td>
 </tr>
 </table>
 
 <table>
 <tr>
-<td align="center"><img src="docs/assets/tworoom.gif"            width="120"/><br><img src="docs/assets/tworoom_fov.gif"            width="120"/></td>
+<td align="center"><img src="docs/assets/cartpole_control.gif"     width="120"/><br><img src="docs/assets/cartpole_control_var.gif"     width="120"/></td>
+<td align="center"><img src="docs/assets/mountain_car_control.gif" width="120"/><br><img src="docs/assets/mountain_car_control_var.gif" width="120"/></td>
+<td align="center"><img src="docs/assets/acrobot_control.gif"      width="120"/><br><img src="docs/assets/acrobot_control_var.gif"      width="120"/></td>
+<td align="center"><img src="docs/assets/pendulum_control.gif"     width="120"/><br><img src="docs/assets/pendulum_control_var.gif"     width="120"/></td>
+</tr>
+</table>
+
+<table>
+<tr>
+<td align="center"><img src="docs/assets/cube.gif"    width="120"/><br><img src="docs/assets/cube_fov.gif"    width="120"/></td>
+<td align="center"><img src="docs/assets/scene.gif"   width="120"/><br><img src="docs/assets/scene_fov.gif"   width="120"/></td>
+<td align="center"><img src="docs/assets/pusht.gif"   width="120"/><br><img src="docs/assets/pusht_fov.gif"   width="120"/></td>
+<td align="center"><img src="docs/assets/tworoom.gif" width="120"/><br><img src="docs/assets/tworoom_fov.gif" width="120"/></td>
+</tr>
+</table>
+
+<table>
+<tr>
 <td align="center"><img src="docs/assets/fetch_reach.gif"        width="120"/><br><img src="docs/assets/fetch_reach_var.gif"        width="120"/></td>
 <td align="center"><img src="docs/assets/fetch_push.gif"         width="120"/><br><img src="docs/assets/fetch_push_var.gif"         width="120"/></td>
 <td align="center"><img src="docs/assets/fetch_slide.gif"        width="120"/><br><img src="docs/assets/fetch_slide_var.gif"        width="120"/></td>
 <td align="center"><img src="docs/assets/fetch_pickandplace.gif" width="120"/><br><img src="docs/assets/fetch_pickandplace_var.gif" width="120"/></td>
+<td align="center"><img src="docs/assets/craftax_classic.gif"    width="120"/><br><img src="docs/assets/craftax.gif"                 width="120"/></td>
 </tr>
 </table>
 
@@ -124,7 +139,7 @@ See the full documentation [here](https://galilai-group.github.io/stable-worldmo
 
 <p align="center"><em>Top row: default appearance &nbsp;·&nbsp; Bottom row: visual factor of variation</em></p>
 
-stable-worldmodel supports a large collection of environments from the [DeepMind Control Suite](https://github.com/google-deepmind/dm_control), [OGBench](https://github.com/seohongpark/ogbench), and classical world model benchmarks such as [Two-Room](https://arxiv.org/abs/2411.04983) and [PushT](https://arxiv.org/abs/2303.04137).
+stable-worldmodel supports a large collection of environments from the [DeepMind Control Suite](https://github.com/google-deepmind/dm_control), [Gymnasium classic control](https://gymnasium.farama.org/environments/classic_control/), [OGBench](https://github.com/seohongpark/ogbench), [Craftax](https://github.com/MichaelTMatthews/Craftax), the [Arcade Learning Environment](https://ale.farama.org/) (100+ Atari games), and classical world model benchmarks such as [Two-Room](https://arxiv.org/abs/2411.04983) and [PushT](https://arxiv.org/abs/2303.04137).
 
 Each environment includes visual and physical factor variations to evaluate robustness and generalization. New environments can easily be added to stable-worldmodel as they only need to follow the [Gymnasium](https://gymnasium.farama.org/) interface.
 
@@ -152,10 +167,20 @@ Each environment includes visual and physical factor variations to evaluate robu
 | swm/FingerDMControl-v0       | 10      |
 | swm/ManipulatorDMControl-v0  | 8       |
 | swm/QuadrupedDMControl-v0    | 7       |
+| swm/CartPoleControl-v1       | 10      |
+| swm/MountainCarControl-v0    | 5       |
+| swm/MountainCarContinuousControl-v0 | 4 |
+| swm/AcrobotControl-v1        | 11      |
+| swm/PendulumControl-v1       | 9       |
 | swm/FetchReach-v3            | 8       |
 | swm/FetchPush-v3             | 11      |
 | swm/FetchSlide-v3            | 11      |
 | swm/FetchPickAndPlace-v3     | 11      |
+| swm/CraftaxClassicPixels-v1  | —       |
+| swm/CraftaxClassicSymbolic-v1| —       |
+| swm/CraftaxPixels-v1         | —       |
+| swm/CraftaxSymbolic-v1       | —       |
+| [ALE/* (100+ Atari games)](https://ale.farama.org/) | — |
 
 </td>
 <td valign="top">

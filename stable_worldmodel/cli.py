@@ -195,10 +195,10 @@ def envs():
     )
     table.add_column('Type', justify='left', style='magenta', no_wrap=True)
 
-    from stable_worldmodel.envs import WORLDS
+    from stable_worldmodel.envs import DISCRETE_WORLDS, WORLDS
 
-    continuous = sorted(e for e in WORLDS if 'Discrete' not in e)
-    discrete = sorted(e for e in WORLDS if 'Discrete' in e)
+    continuous = sorted(WORLDS - DISCRETE_WORLDS)
+    discrete = sorted(DISCRETE_WORLDS)
 
     for env_id in continuous:
         table.add_row(env_id, 'Continuous')
@@ -256,6 +256,59 @@ def fovs(
 
     print(table)
     environment.close()
+
+
+@app.command()
+def convert(
+    name: Annotated[str, typer.Argument(help='Source dataset name.')],
+    output: Annotated[
+        str | None,
+        typer.Argument(
+            help='Output dataset name. Defaults to <name>-<dest-format>.',
+            show_default=False,
+        ),
+    ] = None,
+    dest_format: Annotated[
+        str,
+        typer.Option('--dest-format', '-f', help='Destination format.'),
+    ] = 'video',
+    source_format: Annotated[
+        str | None,
+        typer.Option(
+            '--source-format', help='Force source format (skip detection).'
+        ),
+    ] = None,
+):
+    """Convert a dataset to another format (e.g. HDF5 → video)."""
+    from stable_worldmodel.data import convert as data_convert
+    from stable_worldmodel.data.utils import get_cache_dir
+
+    cache_dir = get_cache_dir(sub_folder='datasets')
+
+    h5_path = cache_dir / f'{name}.h5'
+    folder_path = cache_dir / name
+    if h5_path.exists():
+        source_path = h5_path
+    elif folder_path.is_dir() and (folder_path / 'ep_len.npz').exists():
+        source_path = folder_path
+    else:
+        print(f'[red]Dataset not found: {name}[/red]')
+        print('Run [cyan]swm datasets[/cyan] to see available datasets.')
+        raise typer.Exit(1)
+
+    dest_name = output if output is not None else f'{name}-{dest_format}'
+    dest_path = cache_dir / dest_name
+
+    print(
+        f'Converting [cyan]{name}[/cyan] → [magenta]{dest_format}[/magenta] as [cyan]{dest_name}[/cyan]'
+    )
+    data_convert(
+        source_path,
+        dest_path,
+        dest_format=dest_format,
+        source_format=source_format,
+    )
+    print(f'[green]Done.[/green] Output: {dest_path}')
 
 
 @app.command()
