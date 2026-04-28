@@ -16,6 +16,7 @@ dataset_name: pusht_expert_train_video
 cache_dir: null
 n_steps: ${eval:'${wm.num_preds} + ${wm.history_size}'}
 frameskip: 5
+clip_stride: 1
 
 batch_size: 32
 num_workers: 16

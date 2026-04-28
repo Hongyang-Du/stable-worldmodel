@@ -238,6 +238,7 @@ def run(cfg):
         cfg.dataset_name,
         num_steps=cfg.n_steps,
         frameskip=cfg.frameskip,
+        clip_stride=cfg.get('clip_stride', 1),
         transform=None,
         cache_dir=cfg.get('cache_dir', None),
         keys_to_load=keys_to_load,

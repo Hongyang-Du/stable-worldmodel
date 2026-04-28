@@ -31,6 +31,7 @@ class Dataset:
         frameskip: Stride between observation samples.
         num_steps: Number of observation steps per sample.
         transform: Optional dict-in / dict-out transform applied per sample.
+        clip_stride: Step size between adjacent sample windows.
     """
 
     def __init__(
@@ -40,6 +41,7 @@ class Dataset:
         frameskip: int = 1,
         num_steps: int = 1,
         transform: Callable[[dict], dict] | None = None,
+        clip_stride: int = 1,
     ) -> None:
         self.lengths = lengths
         self.offsets = offsets
@@ -47,11 +49,14 @@ class Dataset:
         self.num_steps = num_steps
         self.span = num_steps * frameskip
         self.transform = transform
+        if clip_stride < 1:
+            raise ValueError('clip_stride must be >= 1')
+        self.clip_stride = clip_stride
         self.clip_indices = [
             (ep, start)
             for ep, length in enumerate(lengths)
             if length >= self.span
-            for start in range(length - self.span + 1)
+            for start in range(0, length - self.span + 1, self.clip_stride)
         ]
 
     @property

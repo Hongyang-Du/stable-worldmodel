@@ -10,7 +10,7 @@ hydra:
 output_model_name: pusht_hwm_${backbone.type}_p${predictor.size}_span${macro_action.max_span}_la${macro_action.latent_dim}
 subdir: null
 seed: 42
-save_epoch_interval: 5
+save_epoch_interval: 100
 
 # --- Data ---
 dataset_name: pusht_expert_train
